@@ -1,0 +1,37 @@
+pipeline {
+    agent any
+
+    tools {
+        // Install the Maven version configured as "M3" and add it to the path.
+        maven "maven3.8"
+    }
+
+    stages {
+        stage('git') {
+            steps {
+                // Get some code from a GitHub repository
+               git credentialsId: 'guthub', url: 'https://github.com/sarkar157112/sark_app.git'
+
+            }
+
+        }
+        stage('build') {
+            steps {
+               sh "mvn clean install"
+                echo 'clean'
+            }
+        }
+        stage('test') {
+            steps {
+               sh "mvn test install"
+                echo 'test the file'
+            }
+        }
+        stage('deploy') {
+            steps {
+                 sh "mvn compile install"
+                echo 'deploy the file'
+            }
+        }
+    }
+}
